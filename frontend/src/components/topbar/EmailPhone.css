@@ -1,0 +1,54 @@
+.topbar-contact-email{
+    display: flex;
+    gap: 25px;
+}
+.email{
+    display: flex;
+    gap: 10px;
+}
+.phone{
+    display: flex;
+    gap: 10px;
+}/* Əsas görünüş (böyük ekranlar üçün) */
+.topbar-contact-email {
+  display: flex;
+  gap: 25px;
+}
+
+.email {
+  display: flex;
+  gap: 10px;
+}
+
+.phone {
+  display: flex;
+  gap: 10px;
+}
+
+#basic-button {
+  color: white;
+  font-size: 20px;
+  display: none; /* ✅ Əsas görünüşdə gizlə */
+}
+
+/* 📱 Telefon və planşet üçün (900px və aşağı) */
+@media (max-width: 992px) {
+  .topbar-contact-email {
+    justify-content: center;
+  }
+
+  .email,
+  .phone {
+    display: none; /* ✅ Kiçik ekranda gizlət */
+  }
+
+  #basic-button {
+    display: block; /* ✅ Kiçik ekranda göstər */
+  }
+}
+
+#basic-button{
+    color: white;
+    font-size: 20px;
+  
+}

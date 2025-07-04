@@ -13,7 +13,7 @@ const SearchBasket = () => {
      <Link> <FaSearch /></Link>
      <Link> <FaHeart /></Link>
      <Link> <BsHandbagFill /></Link>
-     <Link> <FaRegUser /></Link>
+     <Link to="login"> <FaRegUser /></Link>
     </div>
   );
 };

@@ -13,7 +13,7 @@ const Navbar = () => {
         <EmailPhone />
         <SearchBasket />
       </div>
-      <div className="navbar">
+      <div className="container">
         <Link className="logo"><Logo /></Link>
         <Navlist />
       </div>

@@ -1,5 +1,43 @@
 .list{
     display: flex;
-    gap: 40px;
-    /* margin-top: 45px; */
+    gap: 50px;
+}
+.list-link{
+    font-size: 21px;
+    font-weight: bold;
+}
+
+#basic-burger{
+     font-size: 55px;
+    font-weight: bold;
+    color: black;
+    
+}.list {
+    display: flex;
+    gap: 50px;
+}
+
+.list-link {
+    font-size: 21px;
+    font-weight: bold;
+}
+
+#basic-burger {
+    font-size: 55px;
+    font-weight: bold;
+    display: none; /* Böyük ekranlarda gizli olsun */
+}
+
+/* ============================
+   ✅ Responsive dizayn: max 992px
+   ============================ */
+@media (max-width: 992px) {
+    .list {
+        display: none; /* Menü gizlədilir */
+    }
+
+    #basic-burger {
+        display: block; /* Burger görünür */
+        cursor: pointer;
+    }
 }

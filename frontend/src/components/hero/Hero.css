@@ -1,0 +1,53 @@
+.concertimage {
+  width: 100%;
+  /* max-width: 1600px; */
+  /* height: auto; */
+  display: block;
+  margin: 0 auto;
+}
+@media (max-width: 992px) {
+  .concertimage {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .concertimage {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+}
+.item{
+  display: flex;
+  justify-content: center;
+  gap: 190px;
+  padding: 60px;
+  margin-top: 40px;
+ 
+}
+@media (max-width: 768px) {
+  .item {
+    flex-direction: column;     /* elementlər alt-alta düzülür */
+    align-items: center;        /* mərkəzdə düzülür */
+    gap: 40px;                  /* boşluğu azaldırıq */
+    padding: 40px 20px;         /* daha uyğun padding */
+  }
+}
+.ticket{
+  display: flex;
+  justify-content: center; font-size: 80px;
+  color: rgb(165, 2, 2);
+}
+.items{
+display: inline-block;
+  transition: transform 0.2s ease, color 0.2s ease;
+  display: flex;
+flex-direction: column;
+align-items: center;
+gap: 20px;
+}
+
+.items:hover {
+  transform: translateY(-10px); /* yuxarı qalxır */
+  
+}

@@ -1,16 +1,17 @@
 .topbar {
+  min-width: 1200px;
   display: flex;
   justify-content: space-around;
   background: #000;
   color: white;
   padding: 15px;
-  font-size: 15px;
+  font-size: 16px;
   flex-wrap: wrap; /* responsivliyi yaxşılaşdırmaq üçün */
   text-align: center;
 }
 
 /* 💊 Planşet (900px və aşağı) */
-@media (min-width: 768px) and (max-width: 992px) {
+@media (min-width: 576px) and (max-width: 768px) {
   .topbar {
     display: flex;
     align-items: center;
@@ -21,7 +22,7 @@
 }
 
 /* 📱 Telefon (600px və aşağı) */
-@media (max-width: 768px) {
+@media (max-width: 576px) {
   .topbar {
     display: flex;
     flex-direction: column;
@@ -32,10 +33,15 @@
   }
 }
 
-.navbar{
-  /* width: 1100px; */
+.container{
+  width: 85%; /* və ya konkret ölçü: 1200px və s. */
+  height: 110px;
+  margin: 0 auto; /* Ortada yerləşdirmək üçün */
+  padding: 20px;
+  max-width: 1200px; /* Maksimum eni məhdudlaşdırmaq üçün */
   display: flex;
   justify-content: space-between;
   padding: 20px;
+  align-items: center;
 }
 

@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 const Hero = () => {
   return (
     <div>
-      {/* <Swiper
+      <Swiper
         direction="vertical"
         effect="cube"
         loop={true}
@@ -80,7 +80,7 @@ const Hero = () => {
         <SwiperSlide>
           <img src={clon} alt="" style={slideStyle} className="concertimage" />
         </SwiperSlide>
-      </Swiper> */}
+      </Swiper>
       
       <div className="item">
         <Link className="items">
@@ -100,15 +100,15 @@ const Hero = () => {
   );
 };
 
-// const slideStyle = {
-//   background: "#1E88E5",
-//   color: "#fff",
-//   fontSize: "40px",
-//   display: "flex",
-//   justifyContent: "center",
-//   alignItems: "center",
-//   height: "100%",
-//   userSelect: "none",
-// };
+const slideStyle = {
+  background: "#1E88E5",
+  color: "#fff",
+  fontSize: "40px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100%",
+  userSelect: "none",
+};
 
 export default Hero;

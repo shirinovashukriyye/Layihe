@@ -1,21 +1,18 @@
 import jwt from "jsonwebtoken";
-const { JWT_SECRET } = process.env;
 
-export const verifyToken = (req, res, next) => {
+const verifyToken = (req, res, next) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ message: "Token tapılmadı" });
+  }
+
   try {
-    const token = req.cookies.token;
-
-    if (!token) {
-      return res.status(401).json({ message: "Access Denied" });
-    }
-
-    const decoded = jwt.verify(token, JWT_SECRET);
-
-    req.user = decoded;
-
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; 
     next();
-  } catch (error) {
-    return res.status(500).json({ message: "Invalid or Expired Token" });
+  } catch (err) {
+    return res.status(403).json({ message: "Token yanlışdır və ya vaxtı bitib" });
   }
 };
 

@@ -17,3 +17,6 @@ a {
 ul li {
   list-style: none;
 }
+.swiper-slide {
+  outline: none !important;
+}

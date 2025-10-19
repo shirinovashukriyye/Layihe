@@ -13,56 +13,46 @@ export const register = async (req, res) => {
   try {
     const { name, username, email, password } = req.body;
 
-    // Fayl yoxdursa, filename undefined olacaq
-    const filename = req.file?.filename;
 
-    // Şəkil URL-i: boş olsa da undefined kimi ötürülə bilər
-    const imageUrl = filename ? `images/${filename}`.replace(/\\/g, "/") : "";
-
-    // Joi validasiyasına image sahəsini də əlavə et
     const { error } = RegisterValidationSchema.validate({
       name,
       username,
       email,
       password,
-      image: imageUrl,
+     
     });
 
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    // Əgər eyni email ilə istifadəçi varsa
     const existUser = await user.findOne({ email });
     if (existUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Şifrəni hash-lə
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Yeni user yarat
+
     const newUser = new user({
-      image: imageUrl,
       name,
       username,
       email,
       password: hashedPassword,
     });
 
-    // DB-yə yaz
     await newUser.save();
 
-    // Token yarat və cookie-yə yaz
+ 
     generateToken(newUser._id, res);
 
-    // E-poçt təsdiqləmə linki
     const confirmLink = `${process.env.SERVER_LINK}/auth/verify`;
 
-    // Təsdiq mailini göndər
+
     recieveMail(newUser, confirmLink);
 
-    // Uğurlu cavab
+
     return res.status(201).json({
       message: "User created successfully",
       newUser,
@@ -96,34 +86,41 @@ export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const { error } = LoginValidationSchema.validate(req.body);
 
+    const { error } = LoginValidationSchema.validate({ username, password });
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const existUser = await user.findOne({ username: username });
+    const existUser = await user.findOne({ username });
 
     if (!existUser) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: "İstifadəçi tapılmadı" });
     }
 
     const isMatch = await bcrypt.compare(password, existUser.password);
-
     if (!isMatch) {
-      return res.status(400).json({ message: "Username or Password wrong" });
+      return res.status(400).json({ message: "İstifadəçi adı və ya şifrə yanlışdır" });
     }
 
     generateToken(existUser._id, res);
 
+
     return res.status(200).json({
-      message: "User logged in successfully",
-      existUser,
+      message: "Giriş uğurludur",
+      user: {
+        _id: existUser._id,
+        name: existUser.name,
+        username: existUser.username,
+        email: existUser.email,
+      },
     });
+
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 export const logout = (req, res) => {
   res.clearCookie("token");
@@ -199,3 +196,84 @@ export const resetPassword = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+
+export const addToWishlist = async (req, res) => {
+  try {
+    const userId = req.user.id; 
+    const productId = req.params.productId;
+
+    const user = await User.findById(userId);
+
+    if (user.wishlist.includes(productId)) {
+      return res.status(400).json({ message: "Product already in wishlist" });
+    }
+
+    user.wishlist.push(productId);
+    await user.save();
+
+    return res.status(200).json({ message: "Product added to wishlist", wishlist: user.wishlist });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const removeFromWishlist = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const productId = req.params.productId;
+
+    const user = await User.findById(userId);
+
+    user.wishlist = user.wishlist.filter(id => id.toString() !== productId);
+    await user.save();
+
+    return res.status(200).json({ message: "Product removed from wishlist", wishlist: user.wishlist });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+
+export const addToCart = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const productId = req.params.productId;
+    const quantity = req.body.quantity || 1;
+
+    const user = await User.findById(userId);
+
+    const cartItemIndex = user.cart.findIndex(
+      item => item.product.toString() === productId
+    );
+
+    if (cartItemIndex > -1) {
+      user.cart[cartItemIndex].quantity += quantity;
+    } else {
+      user.cart.push({ product: productId, quantity });
+    }
+
+    await user.save();
+
+    return res.status(200).json({ message: "Product added to cart", cart: user.cart });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const removeFromCart = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const productId = req.params.productId;
+
+    const user = await User.findById(userId);
+
+    user.cart = user.cart.filter(item => item.product.toString() !== productId);
+    await user.save();
+
+    return res.status(200).json({ message: "Product removed from cart", cart: user.cart });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+

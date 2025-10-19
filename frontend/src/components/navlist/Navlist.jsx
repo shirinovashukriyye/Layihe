@@ -40,7 +40,7 @@ const Navlist = () => {
           </Link>
         </li>
         <li>
-          <Link to="/createaevent" className="list-link">
+          <Link to="/admin" className="list-link">
             Create A Event
           </Link>
         </li>

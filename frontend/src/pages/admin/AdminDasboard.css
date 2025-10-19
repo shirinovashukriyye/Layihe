@@ -1,0 +1,41 @@
+.admin-dashboard {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-family: sans-serif;
+}
+
+.admin-dashboard h1 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.admin-dashboard ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-dashboard li {
+  margin-bottom: 15px;
+}
+
+.admin-dashboard a {
+  display: block;
+  padding: 12px;
+  text-decoration: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 6px;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.admin-dashboard a:hover {
+  background-color: #0056b3;
+}

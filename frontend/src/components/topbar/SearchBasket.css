@@ -1,4 +1,93 @@
-.topbar-icons{
-    display: flex;
-    gap: 25px;
+.topbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
+  position: relative;
+  z-index: 100;
+}
+
+.icon-btn {
+  font-size: 18px;
+  color: #333;
+  transition: 0.2s;
+}
+
+.icon-btn:hover {
+  color: #007bff;
+}
+
+.signin-button {
+  background-color: #333;
+  color: white;
+  padding: 8px 14px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.3s ease;
+}
+
+.signin-button:hover {
+  background-color: #555;
+}
+
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-button {
+  background-color: transparent !important;
+  color: #333 !important;
+  min-width: 0 !important;
+  padding: 6px !important;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 160px;
+  background-color: #fff;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  z-index: 999;
+  padding: 8px 0;
+}
+
+.dropdown-content a,
+.dropdown-content .MuiMenuItem-root {
+  padding: 10px 16px;
+  display: block;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.dropdown-content a:hover,
+.dropdown-content .MuiMenuItem-root:hover {
+  background-color: #f0f0f0;
+}
+
+
+nav {
+  all: unset;
+}
+
+.dropdown-content.no-auth {
+  top: calc(100% + 6px);
+}
+
+@media (max-width: 768px) {
+  .topbar-icons {
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .signin-button {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
 }

@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
-import './Register.css'
+import { useState } from "react";
+import { registerUser } from "../../api/auth.js";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "./Register.css";
 
 const Register = () => {
-      const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     name: '',
     username: '',
     email: '',
@@ -11,29 +14,51 @@ const Register = () => {
   });
 
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      setError('Şifrələr eyni deyil!');
+    if (!formData.name || !formData.username || !formData.email) {
+      toast.error("Bütün sahələri doldurun!", { theme: "colored" });
       return;
     }
 
-    console.log('Qeydiyyat məlumatları:', formData);
-    setError('');
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Şifrələr eyni deyil!", { theme: "colored" });
+      return;
+    }
+
+    if (!validatePassword(formData.password)) {
+      toast.error("Şifrə minimum 8 simvol, böyük hərf, kiçik hərf, rəqəm və simvol daxil etməlidir!", {
+        position: "top-center",
+        theme: "colored"
+      });
+      return;
+    }
+
+    try {
+      await registerUser(formData);
+      toast.success("Qeydiyyat uğurla tamamlandı", { theme: "colored" });
+      navigate("/login", { state: { registered: true } });
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Xəta baş verdi", { theme: "colored" });
+    }
   };
+
   return (
-    <div>
-        <div className="register-container">
+    <div className="register-container">
       <form onSubmit={handleSubmit} className="register-form">
         <h2>Qeydiyyat</h2>
-
-        {error && <div className="error">{error}</div>}
 
         <input
           type="text"
@@ -42,6 +67,7 @@ const Register = () => {
           value={formData.name}
           onChange={handleChange}
           required
+          className={error && !formData.name ? "error-input" : ""}
         />
 
         <input
@@ -51,6 +77,7 @@ const Register = () => {
           value={formData.username}
           onChange={handleChange}
           required
+          className={error && !formData.username ? "error-input" : ""}
         />
 
         <input
@@ -60,6 +87,7 @@ const Register = () => {
           value={formData.email}
           onChange={handleChange}
           required
+          className={error && !formData.email ? "error-input" : ""}
         />
 
         <input
@@ -69,6 +97,7 @@ const Register = () => {
           value={formData.password}
           onChange={handleChange}
           required
+          className={!validatePassword(formData.password) ? "error-input" : ""}
         />
 
         <input
@@ -78,13 +107,13 @@ const Register = () => {
           value={formData.confirmPassword}
           onChange={handleChange}
           required
+          className={formData.password !== formData.confirmPassword ? "error-input" : ""}
         />
 
         <button type="submit">Qeydiyyatdan keç</button>
       </form>
     </div>
-    </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

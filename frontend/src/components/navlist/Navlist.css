@@ -25,19 +25,16 @@
 #basic-burger {
     font-size: 55px;
     font-weight: bold;
-    display: none; /* Böyük ekranlarda gizli olsun */
+    display: none;
 }
 
-/* ============================
-   ✅ Responsive dizayn: max 992px
-   ============================ */
 @media (max-width: 992px) {
     .list {
-        display: none; /* Menü gizlədilir */
+        display: none; 
     }
 
     #basic-burger {
-        display: block; /* Burger görünür */
+        display: block;
         cursor: pointer;
     }
 }

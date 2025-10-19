@@ -1,47 +1,76 @@
-import React, { useState } from 'react'
-import './Login.css'
+import './Login.css';
 import { Link } from 'react-router-dom';
+import { useState, useContext } from "react";
+import { loginUser } from "../../api/auth.js";
+import { AuthContext } from "../../context/AuthContext.jsx";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 
 const Login = () => {
- const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); 
+  const [loading, setLoading] = useState(false); 
 
-  const handleSubmit = (e) => {
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
+    setLoading(true);
+
+    try {
+      const data = await loginUser({ username, password });
+      login(data);
+      toast.success("Giriş uğurludur");
+      navigate("/");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Xəta baş verdi");
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
-     <div className="login-container">
+    <div className="login-container">
       <form onSubmit={handleSubmit} className="login-form">
         <h2>Giriş</h2>
 
         <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          placeholder="İstifadəçi adı"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           required
         />
 
-        <input
-          type="password"
-          placeholder="Şifrə"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <div className="password-wrapper">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Şifrə"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <span
+            className="toggle-eye"
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
 
-        <button type="submit">Daxil ol</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Yüklənir..." : "Daxil ol"}
+        </button>
 
-        {/* 👇 Alt hissə əlavə olunur */}
         <p className="register-link">
-          Don’t have an account yet?{' '}
-          <Link to="/register">Register</Link>
+          Hesabınız yoxdur? <Link to="/register">Qeydiyyatdan keçin</Link>
         </p>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

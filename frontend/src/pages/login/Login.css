@@ -1,46 +1,102 @@
 .login-container {
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f3f4f6;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #f0f4ff, #e3eaff);
+  min-height: 100vh;
 }
 
 .login-form {
-  background: white;
+  background-color: #fff;
   padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  transition: 0.3s ease;
 }
 
 .login-form h2 {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 24px;
+  color: #333;
 }
 
 .login-form input {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 16px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.login-form input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
 }
 
 .login-form button {
-  background-color: #2563eb;
-  color: white;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
+  width: 100%;
+  padding: 14px;
   font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .login-form button:hover {
-  background-color: #1e40af;
+  background-color: #0056b3;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.register-link a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 500px) {
+  .login-form {
+    padding: 25px;
+  }
+}
+
+
+
+
+/* 👁️ Şifrə göz ikonlu div */
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+/* 👁️ Göz ikonu */
+.toggle-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  cursor: pointer;
+  font-size: 18px;
 }

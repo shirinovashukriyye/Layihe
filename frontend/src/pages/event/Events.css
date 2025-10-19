@@ -1,0 +1,159 @@
+.events-container {
+  padding: 2rem;
+  background: #f5f5f5;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.events-hero {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.events-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.events-hero p {
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.event-search {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  width: 300px;
+  max-width: 80%;
+}
+
+.events-list {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.event-card {
+  perspective: 1000px;
+  position: relative;
+  height: 450px;
+  cursor: pointer;
+}
+
+.card-front, .card-back {
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  background: white;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.event-card:hover .card-front {
+  transform: rotateY(180deg);
+}
+
+.event-card:hover .card-back {
+  transform: rotateY(0deg);
+}
+
+.card-front {
+  z-index: 2;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.event-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.card-back iframe {
+  width: 100%;
+  height: 250px;
+  border-radius: 10px;
+  border: none;
+  margin-bottom: 1rem;
+}
+
+.buy-btn {
+  background: #ff5722;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.buy-btn:hover {
+  background: #e64a19;
+}
+
+.event-countdown {
+  margin-top: 4rem;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.event-countdown h2 {
+  margin-bottom: 1rem;
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.countdown div {
+  background: #eee;
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  font-size: 1.5rem;
+}
+
+.countdown span {
+  display: block;
+  font-size: 2.5rem;
+  color: #ff5722;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .countdown {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .event-search {
+    width: 100%;
+  }
+
+  .event-card {
+    height: auto;
+  }
+
+  .card-front, .card-back {
+    position: static;
+    transform: none !important;
+  }
+}

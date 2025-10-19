@@ -4,13 +4,13 @@ const productSchema = new mongoose.Schema(
   {
     image: {
       type: String,
-      required: true,
+      required: false,
     },
     title: {
       type: String,
       required: true,
     },
-    category: {
+    description: {
       type: String,
       required: true,
     },
@@ -18,6 +18,11 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+  //     slug: {
+  //   type: String,
+  //   required: true,
+  //   unique: true
+  // }
   },
   { collection: "Products", timestamps: true }
 );

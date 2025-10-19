@@ -1,66 +1,112 @@
-import product from "../models/productModel.js";
+import Product from "../models/productModel.js";
+import fs from "fs";
+import path from "path";
+
 
 export const addProduct = async (req, res) => {
   try {
-    const { title, category, price } = req.body;
+    const { title, description, price } = req.body;
 
-    const imageUrl = `images/${req.file.filename}`.replace(/\\/g, "/");
+    if (!title || !description || !price) {
+      return res.status(400).json({ message: "Bütün sahələri doldurun." });
+    }
 
-    const newProduct = new product({
+    const image = req.file?.filename;
+
+    const newProduct = new Product({
       title,
-      category,
+      description,
       price,
-      image: imageUrl,
+      image,
     });
 
     await newProduct.save();
 
-    return res.status(201).json(newProduct);
+    res.status(201).json({ message: "Məhsul əlavə olundu", product: newProduct });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+     console.error(error); 
+  res.status(500).json({ message: error.message || "Server xətası" });
   }
 };
+
+
 export const getProducts = async (req, res) => {
   try {
-    const products = await product.find();
-
-    if (!products) {
-      return res.status(404).json({ message: "No products found" });
-    }
-
-    return res.status(200).json(products);
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
+    const products = await Product.find().sort({ createdAt: -1 });
+    res.status(200).json(products);
+  } catch (err) {
+    console.error("getProducts error:", err);
+    res.status(500).json({ message: "Server xətası" });
   }
 };
-export const deleteProduct = async (req, res) => {
-  const { id } = req.params;
+
+
+export const getProductById = async (req, res) => {
   try {
-    const deletedproduct = await product.findByIdAndDelete(id);
+    const id = req.params.id;
+    const product = await Product.findById(id);
 
-    if (!deletedproduct) {
-      return res.status(404).json({ message: "No product found" });
+    if (!product) {
+      return res.status(404).json({ message: "Məhsul tapılmadı" });
     }
-    return res.status(200).json({ message: "Product deleted successfully" });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
+
+    res.status(200).json(product);
+  } catch (err) {
+    console.error("getProductById error:", err);
+    res.status(500).json({ message: "Server xətası" });
   }
 };
+
 
 export const searchProduct = async (req, res) => {
-  const { title } = req.params;
-
   try {
-    const products = await product.find({
-      title: { $regex: title, $options: "i" },
+    const title = req.params.title;
+    const products = await Product.find({
+      title: { $regex: title, $options: "i" }, 
     });
 
-    if (!products) {
-      return res.status(404).json({ message: "No products found" });
-    }
-
-    return res.status(200).json(products);
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
+    res.status(200).json(products);
+  } catch (err) {
+    console.error("searchProduct error:", err);
+    res.status(500).json({ message: "Server xətası" });
   }
 };
+
+
+export const deleteProduct = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Məhsul tapılmadı" });
+    }
+
+    if (product.image) {
+      const imagePath = path.join("uploads", product.image);
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+    }
+
+    await Product.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Məhsul silindi" });
+  } catch (err) {
+    console.error("deleteProduct error:", err);
+    res.status(500).json({ message: "Server xətası" });
+  }
+}
+
+export const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = {};
+    ["title","description","price"].forEach(k => { if(req.body[k]) updates[k] = req.body[k]; });
+    if (req.file) updates.image = req.file.filename;
+    const product = await Product.findByIdAndUpdate(id, updates, { new: true });
+    if (!product) return res.status(404).json({ message: "Məhsul tapılmadı" });
+    res.json(product);
+  } catch (e) { res.status(500).json({ message: e.message }); }
+};
+

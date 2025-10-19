@@ -1,59 +1,78 @@
 import { FaBuilding } from "react-icons/fa";
 import "./UpcomingEvents.css";
-import React, { useRef, useEffect, useState } from "react";
-
-const items = [
-  { id: 1, title: "Card 1", color: "#fde68a" },
-  { id: 2, title: "Card 2", color: "#fca5a5" },
-  { id: 3, title: "Card 3", color: "#a5f3fc" },
-  { id: 4, title: "Card 4", color: "#c4b5fd" },
-  { id: 4, title: "Card 4", color: "#c4b5fd" },
-  { id: 4, title: "Card 4", color: "#c4b5fd" },
-  { id: 4, title: "Card 4", color: "#c4b5fd" },
-  { id: 4, title: "Card 4", color: "#c4b5fd" },
-];
+import ticketboxunlike from "../../assets/image/ticketboxunlike.jpg";
+import linkinpark from "../../assets/image/linkin-Park.jpg";
+import coldplay from "../../assets/image/Coldplay.jpg";
+import videogameslive from "../../assets/image/videogameslive.jpg";
+import imaginedragons from "../../assets/image/ImagineDragons.jpg";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UpcomingEvents = () => {
-  const sliderRef = useRef(null);
-  const [scrolling, setScrolling] = useState(true);
+  const [index, setIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const images = [
+    { src: imaginedragons, slug: "imaginedragons", title: "Imagine Dragons" },
+    { src: linkinpark, slug: "linkinpark", title: "Linkin Park" },
+    { src: videogameslive, slug: "videogameslive", title: "Video Games Live" },
+    { src: coldplay, slug: "coldplay", title: "Coldplay" },
+    { src: ticketboxunlike, slug: "ticketbox", title: "Ticketbox Events" },
+  ];
+
+  const visibleCount = 3;
+  const totalSlides = images.length;
+  const maxIndex = totalSlides - visibleCount;
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (sliderRef.current && scrolling) {
-        sliderRef.current.scrollLeft += 200; // Sağdan sola
-        if (
-          sliderRef.current.scrollLeft + sliderRef.current.offsetWidth >=
-          sliderRef.current.scrollWidth
-        ) {
-          sliderRef.current.scrollLeft = 0;
-        }
-      }
-    }, 2500); // Hər 2.5 saniyəyə bir sürüşür
-
+      setIndex((prev) => (prev + 1 > maxIndex ? 0 : prev + 1));
+    }, 4000);
     return () => clearInterval(interval);
-  }, [scrolling]);
+  }, [maxIndex]);
+
+  const prevSlide = () => {
+    setIndex((prev) => (prev - 1 + (maxIndex + 1)) % (maxIndex + 1));
+  };
+
+  const nextSlide = () => {
+    setIndex((prev) => (prev + 1) % (maxIndex + 1));
+  };
+
+  const handleClick = (slug) => {
+    navigate(`/concerts/${slug}`);
+  };
+
   return (
-    <div>
+    <div className="groups">
       <div className="upcoming">
         <FaBuilding />
         <h6>Upcoming Events</h6>
       </div>
       <div className="slider-wrapper">
-        <div
-          className="slider-container"
-          ref={sliderRef}
-          onMouseEnter={() => setScrolling(false)}
-          onMouseLeave={() => setScrolling(true)}
-        >
-          {items.map((item) => (
-            <div
-              className="slider-item"
-              key={item.id}
-              style={{ backgroundColor: item.color }}
-            >
-              {item.title}
-            </div>
-          ))}
+        <div className="slider-header">
+          <button className="slider-btn" onClick={prevSlide}>◀</button>
+          <button className="slider-btn" onClick={nextSlide}>▶</button>
+        </div>
+
+        <div className="slider-container">
+          <div
+            className="boxes"
+            style={{
+              transform: `translateX(-${index * (500 + 20)}px)`,
+            }}
+          >
+            {images.map((img, i) => (
+              <div
+                key={i}
+                onClick={() => handleClick(img.slug)}
+                className="clickable-image"
+              >
+                <img src={img.src} alt={img.slug} className="box-coming" />
+                <div className="image-title">{img.title}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

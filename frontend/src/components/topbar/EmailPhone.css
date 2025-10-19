@@ -9,7 +9,7 @@
 .phone{
     display: flex;
     gap: 10px;
-}/* Əsas görünüş (böyük ekranlar üçün) */
+}
 .topbar-contact-email {
   display: flex;
   gap: 25px;
@@ -28,10 +28,9 @@
 #basic-button {
   color: white;
   font-size: 25px;
-  display: none; /* ✅ Əsas görünüşdə gizlə */
+  display: none; 
 }
 
-/* 📱 Telefon və planşet üçün (900px və aşağı) */
 @media (max-width: 992px) {
   .topbar-contact-email {
     justify-content: center;
@@ -39,11 +38,11 @@
 
   .email,
   .phone {
-    display: none; /* ✅ Kiçik ekranda gizlət */
+    display: none; 
   }
 
   #basic-button {
-    display: block; /* ✅ Kiçik ekranda göstər */
+    display: block;
   }
 }
 
